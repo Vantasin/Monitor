@@ -1,0 +1,13 @@
+global:
+  smtp_smarthost: "smtp.example.com:587"
+  smtp_from: "your-email@example.com"
+  smtp_auth_username: "your-email@example.com"
+  smtp_auth_password: "your-app-password"
+
+route:
+  receiver: "default-receiver"
+
+receivers:
+  - name: "default-receiver"
+    email_configs:
+      - to: "admin@example.com"
