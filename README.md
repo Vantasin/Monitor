@@ -1,4 +1,4 @@
-# 🖥️ Monitor Stack
+# 🖥️ Monitor Docker Compose Stack
 
 [![MIT License](https://img.shields.io/github/license/Vantasin/Monitor?style=flat-square)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-compose-2496ED?logo=docker&logoColor=white&style=flat-square)](https://www.docker.com/)
