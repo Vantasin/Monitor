@@ -89,6 +89,8 @@ tank/
    sudo chown -R 472:472 grafana-storage
    ```
 
+   > **Note:** This step ensures Grafana can write to the mounted volume (/var/lib/grafana) without permission errors.
+
 4. **Start monitor**
 
    ```bash
