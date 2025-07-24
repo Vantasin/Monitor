@@ -66,9 +66,9 @@ tank/
    git clone https://github.com/Vantasin/Monitor.git .
    ```
 
-2. **Configure environment variables**
+2. **Configure alertmanager variables**
 
-   Copy and modify the `.env` file:
+   Copy and modify the `alertmanager.yml` file:
 
    ```bash
    sudo cp alertmanager-example.yml alertmanager.yml
@@ -77,8 +77,6 @@ tank/
    ```
 
    > **Note:** Be sure to update `"smtp.example.com:587"`, `"your-email@example.com"`, `"your-email@example.com"`, `"your-app-password"` and `"admin@example.com"` with your credentials in order to receive email alerts from your monitoring stack.
-
-   > **Note:** Consider adding **Grafana** as a proxy host using [Nginx Proxy Manager](https://github.com/Vantasin/Nginx-Proxy-Manager.git) as a reverse proxy for HTTPS certificates via Let's Encrypt.
 
    > **(Optional)** Tune Prometheus scrape settings and alert rules in `prometheus.yml` and `alert_rules.yml`
 
@@ -100,7 +98,9 @@ Once deployed, access the monitors via:
 * **cAdvisor**:    [http://localhost:8088/](http://localhost:8088/)
 * **Node Exporter**: [http://localhost:9100/](http://localhost:9100/)
 
-> **Note:** If using `Nginx Proxy Manager` or `Tailscale`, replace `localhost` with the appropriate domain or private IP.
+> **Note:** Consider adding the monitor services as proxy hosts using [Nginx Proxy Manager](https://github.com/Vantasin/Nginx-Proxy-Manager.git) as a reverse proxy for HTTPS certificates via Let's Encrypt.
+
+> **Note:** If using `Nginx Proxy Manager` and/or `Tailscale`, replace `localhost` with the appropriate domain or private IP.
 
 > **Note:**  
 > This monitoring stack uses **Node Exporter** to expose system metrics, **Prometheus** to scrape, store, and evaluate those metrics, and **Grafana** to visualize them in dashboards. Prometheus also handles alerting by evaluating rules defined in `alert_rules.yml` and forwarding alerts to **Alertmanager**.
