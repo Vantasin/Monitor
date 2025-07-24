@@ -92,15 +92,13 @@ tank/
 
 Once deployed, access the monitors via:
 
-* **Prometheus**:  [http://localhost:9090/](http://localhost:9090/)
-* **Grafana**:     [http://localhost:3030/](http://localhost:3030/) (default credentials: `admin` / `admin`)
-* **Alertmanager**: [http://localhost:9093/](http://localhost:9093/)
-* **cAdvisor**:    [http://localhost:8088/](http://localhost:8088/)
-* **Node Exporter**: [http://localhost:9100/](http://localhost:9100/)
+- **Prometheus**:    `http://localhost:9090/`
+- **Grafana**:       `http://localhost:3030/` (default credentials: `admin` / `admin`)
+- **Alertmanager**:  `http://localhost:9093/`
+- **cAdvisor**:      `http://localhost:8088/`
+- **Node Exporter**: `http://localhost:9100/`
 
-> **Note:** Consider adding the monitor services as proxy hosts using [Nginx Proxy Manager](https://github.com/Vantasin/Nginx-Proxy-Manager.git) as a reverse proxy for HTTPS certificates via Let's Encrypt.
-
-> **Note:** If using `Nginx Proxy Manager` and/or `Tailscale`, replace `localhost` with the appropriate domain or private IP.
+> **Note:** If using a `remote-host` and/or `Tailscale`, replace `localhost` with the appropriate IP address.
 
 > **Note:**  
 > This monitoring stack uses **Node Exporter** to expose system metrics, **Prometheus** to scrape, store, and evaluate those metrics, and **Grafana** to visualize them in dashboards. Prometheus also handles alerting by evaluating rules defined in `alert_rules.yml` and forwarding alerts to **Alertmanager**.
@@ -117,10 +115,12 @@ To visualize metrics from Prometheus, Node Exporter, and cAdvisor in Grafana, fo
 ### 1. Access Grafana
 Open your browser and navigate to:
 
-`http://<your-server-ip>:3000`
+`http://<your-server-ip>:3030`
 
 - Default username: `admin`
 - Default password: `admin` (you will be prompted to change it)
+
+> **Note:** Consider adding `Grafana` as proxy host using [Nginx Proxy Manager](https://github.com/Vantasin/Nginx-Proxy-Manager.git) as a reverse proxy for HTTPS certificates via Let's Encrypt.
 
 ### 2. Add Prometheus as a Data Source
 
