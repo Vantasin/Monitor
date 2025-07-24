@@ -80,18 +80,7 @@ tank/
 
    > **(Optional)** Tune Prometheus scrape settings and alert rules in `prometheus.yml` and `alert_rules.yml`
 
-3. **Prepare Grafana storage directory with correct permissions**
-
-   Create the data directory and set the correct ownership for Grafana (UID/GID 472):
-
-   ```bash
-   sudo mkdir -p grafana-storage
-   sudo chown -R 472:472 grafana-storage
-   ```
-
-   > **Note:** This step ensures Grafana can write to the mounted volume (/var/lib/grafana) without permission errors.
-
-4. **Start monitor**
+3. **Start monitor**
 
    ```bash
    docker compose up -d

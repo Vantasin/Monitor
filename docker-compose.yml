@@ -33,7 +33,7 @@ services:
     ports:
       - 3030:3000
     volumes:
-      - ./grafana-storage:/var/lib/grafana
+      - grafana-storage:/var/lib/grafana
     networks:
       - monitoring
 
