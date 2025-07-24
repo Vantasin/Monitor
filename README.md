@@ -85,7 +85,7 @@ tank/
    Create the data directory and set the correct ownership for Grafana (UID/GID 472):
 
    ```bash
-   mkdir -p grafana-storage
+   sudo mkdir -p grafana-storage
    sudo chown -R 472:472 grafana-storage
    ```
 
