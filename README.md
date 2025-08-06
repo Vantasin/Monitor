@@ -73,7 +73,7 @@ tank/
    ```bash
    sudo cp alertmanager-example.yml alertmanager.yml
    sudo nano alertmanager.yml
-   sudo chmod 600 alertmanager.yml
+   sudo chmod 644 alertmanager.yml
    ```
 
    > **Note:** Be sure to update `"smtp.example.com:587"`, `"your-email@example.com"`, `"your-email@example.com"`, `"your-app-password"` and `"admin@example.com"` with your credentials in order to receive email alerts from your monitoring stack.
@@ -88,39 +88,36 @@ tank/
 
 ---
 
-## 🌐 Accessing monitor Web UI
-
-Once deployed, access the monitors via:
-
-- **Prometheus**:    `http://localhost:9090/`
-- **Grafana**:       `http://localhost:3030/` (default credentials: `admin` / `admin`)
-- **Alertmanager**:  `http://localhost:9093/`
-- **cAdvisor**:      `http://localhost:8088/`
-- **Node Exporter**: `http://localhost:9100/`
-
-> **Note:** If using a `remote-host` and/or `Tailscale`, replace `localhost` with the appropriate IP address.
-
-> **Note:**  
-> This monitoring stack uses **Node Exporter** to expose system metrics, **Prometheus** to scrape, store, and evaluate those metrics, and **Grafana** to visualize them in dashboards. Prometheus also handles alerting by evaluating rules defined in `alert_rules.yml` and forwarding alerts to **Alertmanager**.
-
-> **Note:**  
-> **cAdvisor** collects real-time resource usage metrics from Docker containers, which Prometheus scrapes and Grafana visualizes. It complements Node Exporter by providing container-level insights.
-
----
-
 ## 📊 Grafana Dashboard Setup
 
 To visualize metrics from Prometheus, Node Exporter, and cAdvisor in Grafana, follow these steps:
 
+   > **Note:**  
+   > This monitoring stack uses **Node Exporter** to expose system metrics, **Prometheus** to scrape, store, and evaluate those metrics, and **Grafana** to visualize them in dashboards. Prometheus also handles alerting by evaluating rules defined in `alert_rules.yml` and forwarding alerts to **Alertmanager**. **cAdvisor** collects real-time resource usage metrics from Docker containers, which Prometheus scrapes and Grafana visualizes. It complements Node Exporter by providing container-level insights.
+
 ### 1. Access Grafana
-Open your browser and navigate to:
 
-`http://<your-server-ip>:3030`
+Once deployed, access **Grafana** using:
 
-- Default username: `admin`
-- Default password: `admin` (you will be prompted to change it)
+- **Web Interface:** Enter the URL for Grafana. Eg. `https://graph.example.com`.
 
-> **Note:** Consider adding `Grafana` as proxy host using [Nginx Proxy Manager](https://github.com/Vantasin/Nginx-Proxy-Manager.git) as a reverse proxy for HTTPS certificates via Let's Encrypt.
+   - **Default Username:** `admin`
+
+   - **Default Password:** `admin` (you will be prompted to change it)
+
+   > **Note:**
+   > In order to access the Grafana GUI via the browser, you must create a URL eg. `https://graph.example.com` using [Nginx Proxy Manager](https://github.com/Vantasin/Nginx-Proxy-Manager.git) as a reverse proxy for HTTPS certificates via Let's Encrypt.
+   >
+   > **Proxy Host:**
+   >  - **Domain Name:** `https://graph.example.com`
+   >  - **Scheme:** `http`
+   >  - **Forward Hostname/IP:** `grafana`
+   >  - **Forward Port:** `3000`
+   >
+   > **SSL:**
+   >  - Check **Enable SSL**
+   >  - From the **Certificate** dropdown select your `*.example.com` certificate
+   >  - Enable **Force SSL** to redirect all HTTP → HTTPS
 
 ### 2. Add Prometheus as a Data Source
 
