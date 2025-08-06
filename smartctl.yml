@@ -1,0 +1,10 @@
+devices:
+  - name: sda
+    path: /dev/sda
+    type: sat
+  - name: sdb
+    path: /dev/sdb
+    type: sat
+  - name: nvme0n1
+    path: /dev/nvme0n1
+    type: nvme

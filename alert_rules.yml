@@ -95,3 +95,12 @@ groups:
         annotations:
           summary: "High Docker CPU usage for {{ $labels.name }}"
           description: "Container {{ $labels.name }} is using more than 80% CPU."
+
+      - alert: SmartFailureDetected
+        expr: smartctl_device_smart_status == 1
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SMART failure on {{ $labels.device }}"
+          description: "Disk {{ $labels.device }} has reported a SMART failure."

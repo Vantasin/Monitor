@@ -52,6 +52,21 @@ services:
     networks:
       - npm_proxy
 
+  smartctl-exporter:
+    image: quay.io/prometheuscommunity/smartctl-exporter:latest
+    container_name: smartctl-exporter
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /dev:/dev
+      - /run/udev:/run/udev:ro
+      - ./smartctl.yml:/etc/smartctl_exporter/config.yml:ro
+    command:
+      - --config.file=/etc/smartctl_exporter/config.yml
+      - --web.listen-address=:9633
+    networks:
+      - npm_proxy
+
 volumes:
   grafana-storage:
 
