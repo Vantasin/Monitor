@@ -1,4 +1,3 @@
-
 groups:
   - name: core_alerts
     rules:
@@ -24,19 +23,29 @@ groups:
           description: "CPU usage is above 90% for 5 minutes."
 
       - alert: HighMemoryUsage
-        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        expr: (1 - (avg by (instance) (node_memory_MemAvailable_bytes) / avg by (instance) (node_memory_MemTotal_bytes))) * 100 > 90
         for: 5m
         labels:
           severity: warning
+          team: ops
         annotations:
           summary: "High memory usage on {{ $labels.instance }}"
           description: "Available memory is below 10% for over 5 minutes."
 
       - alert: DiskSpaceLow
-        expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"}) < 0.15
+        expr: |
+          (
+            node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"}
+            /
+            node_filesystem_size_bytes{fstype!~"tmpfs|overlay"}
+          ) < 0.15
+          and ignoring(fstype, device) (
+            node_filesystem_readonly == 0
+          )
         for: 5m
         labels:
           severity: warning
+          team: ops
         annotations:
           summary: "Low disk space on {{ $labels.instance }} ({{ $labels.mountpoint }})"
           description: "Less than 15% disk space remaining on {{ $labels.mountpoint }}."
@@ -46,6 +55,7 @@ groups:
         for: 2m
         labels:
           severity: warning
+          team: ops
         annotations:
           summary: "A Prometheus target is missing"
           description: "Target {{ $labels.job }} on {{ $labels.instance }} is down for 2+ minutes."
@@ -55,6 +65,7 @@ groups:
         for: 5m
         labels:
           severity: warning
+          team: ops
         annotations:
           summary: "Prometheus rule evaluation failures"
           description: "Prometheus has encountered rule evaluation failures in the last 5 minutes."
@@ -64,6 +75,7 @@ groups:
         for: 2m
         labels:
           severity: warning
+          team: ops
         annotations:
           summary: "Clock drift detected on {{ $labels.instance }}"
           description: "The system clock is drifting more than 30s from Prometheus."
@@ -73,25 +85,36 @@ groups:
         for: 1m
         labels:
           severity: critical
+          team: ops
         annotations:
-          summary: "OOM kill in container {{ $labels.name }}"
-          description: "Container {{ $labels.name }} has run out of memory."
+          summary: "OOM kill in container {{ $labels.container }}"
+          description: "Container {{ $labels.container }} has run out of memory."
 
       - alert: DockerContainerRestarted
         expr: changes(container_start_time_seconds[5m]) > 1
         for: 1m
         labels:
           severity: warning
-          container: "{{ $labels.name }}"
+          team: ops
         annotations:
           summary: "Container {{ $labels.container }} crash-looping"
-          description: "Container {{ $labels.name }} has restarted more than once in the last 5 minutes. Investigate logs or resource constraints."
+          description: "Container {{ $labels.container }} has restarted more than once in the last 5 minutes. Investigate logs or resource constraints."
 
       - alert: HighDockerCPUUsage
-        expr: rate(container_cpu_usage_seconds_total[5m]) * 100 > 90
+        expr: |
+          (
+            sum by (container) (
+              rate(container_cpu_usage_seconds_total{image!=""}[5m])
+            )
+            /
+            count without (cpu,mode) (
+              node_cpu_seconds_total{mode="idle"}
+            )
+          ) * 100 > 90
         for: 5m
         labels:
           severity: warning
+          team: ops
         annotations:
-          summary: "High Docker CPU usage for {{ $labels.name }}"
-          description: "Container {{ $labels.name }} is using more than 80% CPU."
+          summary: "High Docker CPU usage for {{ $labels.container }}"
+          description: "Container {{ $labels.container }} is using more than 90% of host CPU capacity."
