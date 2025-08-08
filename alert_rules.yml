@@ -88,8 +88,8 @@ groups:
           description: "Container {{ $labels.name }} has restarted more than once in the last 5 minutes. Investigate logs or resource constraints."
 
       - alert: HighDockerCPUUsage
-        expr: rate(container_cpu_usage_seconds_total[2m]) * 100 > 80
-        for: 2m
+        expr: rate(container_cpu_usage_seconds_total[5m]) * 100 > 90
+        for: 5m
         labels:
           severity: warning
         annotations:
