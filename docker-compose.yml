@@ -9,9 +9,14 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'   # keep 15 days of history (tune as needed)
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+      - prometheus-data:/prometheus
     networks:
       - npm_proxy
 
@@ -53,7 +58,10 @@ services:
       - npm_proxy
 
 volumes:
+  prometheus-data:
+    name: prometheus-data
   grafana-storage:
+    name: grafana-storage
 
 networks:
   npm_proxy:
