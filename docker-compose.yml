@@ -58,10 +58,8 @@ services:
       - npm_proxy
 
 volumes:
-  prometheus-data:
-    name: prometheus-data
   grafana-storage:
-    name: grafana-storage
+  prometheus-data:
 
 networks:
   npm_proxy:
