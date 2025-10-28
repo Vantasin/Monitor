@@ -37,7 +37,7 @@ services:
       - npm_proxy
 
   grafana:
-    image: grafana/grafana-oss:latest
+    image: grafana/grafana:latest
     container_name: grafana
     restart: unless-stopped
     volumes:
